@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { Component, Inject } from '@angular/core';
 
 import { ApiService } from './services/ApiService';
+import { ViewPortService } from './services/ViewPortService';
+
 
 @Component({
   selector: 'app-root',
@@ -31,10 +33,12 @@ export class AppComponent {
   constructor(
     private apiService: ApiService,
     @Inject('ApiServiceAlias') private aliasService: ApiService,  // 通过另一个令牌ApiServiceAlias，来使用既有服务ApiService
+    @Inject('SizeService') private sizeService: any,
   ) { }
   invokeApi(): void {
     this.apiService.get();
     this.aliasService.get();
+    this.sizeService.run();
   }
 }
 
@@ -47,7 +51,15 @@ export class AppComponent {
   ],
   providers: [
     ApiService,
-    { provide: 'ApiServiceAlias', useExisting: ApiService } // 通过另一个令牌ApiServiceAlias，来使用既有服务ApiService
+    { provide: 'ApiServiceAlias', useExisting: ApiService }, // 通过另一个令牌ApiServiceAlias，来使用既有服务ApiService
+    ViewPortService,
+    {
+      provide: 'SizeService',
+      useFactory: (viewport: any) => {
+        return viewport.determineService();
+      },
+      deps: [ViewPortService]
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -8,10 +8,19 @@ import { ApiService } from './services/ApiService';
   selector: 'app-root',
   template: `root`,
 })
+// export class AppComponent {
+//   constructor(
+//     private apiService: ApiService,  // 1）在部件的构造函数中声明可注入对象
+//   ) {
+//     this.apiService.get();
+//   }
+// }
 export class AppComponent {
+  private apiService: ApiService;
   constructor(
-    private apiService: ApiService,  // 在部件的构造函数中声明可注入对象
+    @Inject(ApiService) apiService: ApiService // 2）@Inject注解，注入
   ) {
+    this.apiService = apiService;
     this.apiService.get();
   }
 }

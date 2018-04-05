@@ -6,7 +6,10 @@ import { ApiService } from './services/ApiService';
 
 @Component({
   selector: 'app-root',
-  template: `root`,
+  template: `
+  <button (click)="invokeApi()">Invoke API</button>
+  <button (click)="useInjectors()">Use Injectors</button>
+  `,
 })
 // export class AppComponent {
 //   constructor(
@@ -15,12 +18,20 @@ import { ApiService } from './services/ApiService';
 //     this.apiService.get();
 //   }
 // }
+// export class AppComponent {
+//   private apiService: ApiService;
+//   constructor(
+//     @Inject(ApiService) apiService: ApiService // 2）@Inject注解，注入
+//   ) {
+//     this.apiService = apiService;
+//     this.apiService.get();
+//   }
+// }
 export class AppComponent {
-  private apiService: ApiService;
   constructor(
-    @Inject(ApiService) apiService: ApiService // 2）@Inject注解，注入
-  ) {
-    this.apiService = apiService;
+    private apiService: ApiService,
+  ) { }
+  invokeApi(): void {
     this.apiService.get();
   }
 }
@@ -33,7 +44,7 @@ export class AppComponent {
     BrowserModule
   ],
   providers: [
-    ApiService
+    ApiService,
   ],
   bootstrap: [AppComponent]
 })

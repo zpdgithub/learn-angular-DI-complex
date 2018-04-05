@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 
 import { ApiService } from './services/ApiService';
 
@@ -10,8 +10,9 @@ import { ApiService } from './services/ApiService';
 })
 export class AppComponent {
   constructor(
-    private apiService: ApiService  // 在部件的构造函数中声明可注入对象
+    private apiService: ApiService,  // 在部件的构造函数中声明可注入对象
   ) {
+    this.apiService.get();
   }
 }
 

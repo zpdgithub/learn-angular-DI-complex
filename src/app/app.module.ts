@@ -30,9 +30,11 @@ import { ApiService } from './services/ApiService';
 export class AppComponent {
   constructor(
     private apiService: ApiService,
+    @Inject('ApiServiceAlias') private aliasService: ApiService,  // 通过另一个令牌ApiServiceAlias，来使用既有服务ApiService
   ) { }
   invokeApi(): void {
     this.apiService.get();
+    this.aliasService.get();
   }
 }
 
@@ -45,6 +47,7 @@ export class AppComponent {
   ],
   providers: [
     ApiService,
+    { provide: 'ApiServiceAlias', useExisting: ApiService } // 通过另一个令牌ApiServiceAlias，来使用既有服务ApiService
   ],
   bootstrap: [AppComponent]
 })

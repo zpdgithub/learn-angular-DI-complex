@@ -1,6 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { Component, Inject } from '@angular/core';
+import {
+  Component,
+  Inject,
+  ReflectiveInjector
+} from '@angular/core';
 
 import { ApiService } from './services/ApiService';
 import { ViewPortService } from './services/ViewPortService';
@@ -39,6 +43,20 @@ export class AppComponent {
     this.apiService.get();
     this.aliasService.get();
     this.sizeService.run();
+  }
+  useInjectors(): void {  // 随需创建注入器
+    const injector: any = ReflectiveInjector.resolveAndCreate([
+      ViewPortService,
+      {
+        provide: 'OtherSizeService',
+        useFactory: (viewport: any) => {
+          return viewport.determineService();
+        },
+        deps: [ViewPortService]
+      }
+    ]);
+    const sizeService: any = injector.get('OtherSizeService');
+    sizeService.run();
   }
 }
 
